@@ -25,9 +25,11 @@ end
 end
 
 template "minimal_vimrc" do
-    path "/home/vagrant/.vimrc"
-    source "minimal_vimrc"
-    mode 0644
+  path "/home/vagrant/.vimrc"
+  source "minimal_vimrc"
+  mode 0644
+  owner "vagrant"
+  group "vagrant"
 end
 
 # install wget
@@ -88,4 +90,22 @@ end
 # service configuration
 service "mysql" do
   action [:enable, :start]
+end
+
+# vundle
+vundle_path = "/home/vagrant/.vim/bundle/vundle"
+directory vundle_path do
+  owner "vagrant"
+  group "vagrant"
+  recursive true
+  mode 0755
+  action :create
+  not_if { File.exists? vundle_path }
+end
+execute "vundle (vim) install" do 
+  command <<-EOH
+    git clone http://github.com/gmarik/vundle.git #{vundle_path}
+    chown -R vagrant:vagrant /home/vagrant/.vim
+  EOH
+  not_if { File.exists? vundle_path + "/README.md" }
 end
