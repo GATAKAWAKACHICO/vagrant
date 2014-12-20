@@ -79,6 +79,33 @@ execute "install ruby" do
   EOH
 end
 
+# install java
+%w{openjdk-7-jdk}.each do |pkg|
+  package pkg do
+    action :install
+  end
+end
+
+# install subversion
+%w{subversion}.each do |pkg|
+  package pkg do
+    action :install
+  end
+end
+
+# install ant
+%w{ant ant-optional}.each do |pkg|
+  package pkg do
+    action :install
+  end
+end
+
+# install lynx (to use nutch)
+%w{lynx}.each do |pkg|
+  package pkg do
+    action :install
+  end
+end
 
 # install mysql
 %w{mysql-server libmysqld-dev libmysqlclient-dev}.each do |pkg|
